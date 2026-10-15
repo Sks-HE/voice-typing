@@ -710,7 +710,7 @@ const uiText = {
     toastNetwork: "Network error—check your connection."
   },
   bn: {
-    title: "Voice to Text",
+    title: "ভয়েস টু টেক্সট",
     edit: "এডিট করুন",
     save: "সেভ করুন",
     copy: "কপি করুন",
@@ -849,34 +849,53 @@ function appendFinalTranscript(text) {
 }
 
 function createRecognition(token) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
   if (!SpeechRecognition) {
     showToast('toastNoSupport');
     isListening = false;
     updateMicUI(false);
     return;
   }
+
   const recog = new SpeechRecognition();
   const finalizedIndexes = new Set();
+  const isMobileDevice =
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
   recog.lang = selectedLang;
-  recog.continuous = true;
-  recog.interimResults = true;
+
+  // মোবাইলে একটি করে speech segment শনাক্ত হবে।
+  // ডেস্কটপে আগের continuous recognition-ই থাকবে।
+  recog.continuous = !isMobileDevice;
+  recog.interimResults = !isMobileDevice;
   recog.maxAlternatives = 1;
 
   recog.onstart = () => {
     if (token !== runToken || !isListening) return;
+
     recognition = recog;
     updateMicUI(true);
   };
 
   recog.onresult = event => {
     if (token !== runToken || !isListening || isEditMode) return;
+
     const interimParts = [];
-    for (let i = 0; i < event.results.length; i++) {
+    const startIndex = Number.isInteger(event.resultIndex)
+      ? event.resultIndex
+      : 0;
+
+    for (let i = startIndex; i < event.results.length; i++) {
       const result = event.results[i];
+
       if (!result || !result[0]) continue;
+
       const transcript = result[0].transcript.trim();
+
       if (!transcript) continue;
+
       if (result.isFinal) {
         if (!finalizedIndexes.has(i)) {
           finalizedIndexes.add(i);
@@ -886,13 +905,18 @@ function createRecognition(token) {
         interimParts.push(transcript);
       }
     }
+
     interimTranscript = interimParts.join(' ').trim();
     renderTranscript();
   };
 
   recog.onerror = event => {
     if (token !== runToken) return;
-    if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+
+    if (
+      event.error === 'not-allowed' ||
+      event.error === 'service-not-allowed'
+    ) {
       showToast('toastMicDenied');
       stopListening();
     } else if (event.error === 'audio-capture') {
@@ -904,13 +928,19 @@ function createRecognition(token) {
 
   recog.onend = () => {
     if (recognition === recog) recognition = null;
+
     if (token !== runToken || !isListening || stopRequested) return;
+
     interimTranscript = '';
     renderTranscript();
+
     if (restartTimeout) clearTimeout(restartTimeout);
+
     restartTimeout = window.setTimeout(() => {
-      if (token === runToken && isListening && !stopRequested) createRecognition(token);
-    }, 180);
+      if (token === runToken && isListening && !stopRequested) {
+        createRecognition(token);
+      }
+    }, isMobileDevice ? 300 : 180);
   };
 
   try {
@@ -918,9 +948,12 @@ function createRecognition(token) {
   } catch (error) {
     if (token === runToken && isListening) {
       if (restartTimeout) clearTimeout(restartTimeout);
+
       restartTimeout = window.setTimeout(() => {
-        if (token === runToken && isListening && !stopRequested) createRecognition(token);
-      }, 350);
+        if (token === runToken && isListening && !stopRequested) {
+          createRecognition(token);
+        }
+      }, isMobileDevice ? 500 : 350);
     }
   }
 }
