@@ -8,51 +8,55 @@
 <link rel="apple-touch-icon" href="https://i.pinimg.com/736x/70/1a/f4/701af4536876f6acf9d9bc853921db87.jpg">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Orbitron:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-/* ডিফল্ট থিম: সাদা (Light Mode) */
 :root {
   --bg-primary: #ffffff;
-  --bg-secondary: #f0f4f8;
-  --text-primary: #0a1628; /* কালো/গাঢ় নীল লেখা */
-  --text-secondary: #4a5568;
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(0, 0, 0, 0.2); /* কালো বর্ডার */
-  --glass-shadow: rgba(0, 0, 0, 0.1);
-  --accent: #007bff;
-  --accent-secondary: #0056b3;
-  --accent-glow: rgba(0, 123, 255, 0.2);
-  --mic-color: #007bff;
-  --mic-glow: rgba(0, 123, 255, 0.4);
-  --copy-bg: rgba(0, 123, 255, 0.1);
-  --copy-border: rgba(0, 123, 255, 0.3);
-  --clear-bg: rgba(255, 75, 100, 0.1);
-  --clear-border: rgba(255, 75, 100, 0.3);
-  --clear-color: #ff4b64;
+  --bg-secondary: #ffffff;
+  --text-primary: #111111;
+  --text-secondary: #333333;
+  --glass-bg: #ffffff;
+  --glass-border: #111111;
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+  --accent: #00a8cc;
+  --accent-secondary: #6550d8;
+  --accent-glow: rgba(0, 168, 204, 0.22);
+  --mic-color: #00a8cc;
+  --mic-glow: rgba(0, 168, 204, 0.25);
+  --copy-bg: rgba(0, 0, 0, 0.06);
+  --copy-border: #111111;
+  --clear-bg: rgba(0, 0, 0, 0.04);
+  --clear-border: #111111;
+  --clear-color: #111111;
   --font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
-  --transition-speed: 0.4s;
+  --transition-speed: 0.25s;
 }
 
-/* ডার্ক মোড (যখন বাটন চেঞ্জ করা হবে) */
 html.dark-mode {
   --bg-primary: #050a15;
   --bg-secondary: #0a1628;
   --text-primary: #e8f4ff;
-  --text-secondary: #7a9ec7;
-  --glass-bg: rgba(15, 35, 70, 0.65);
-  --glass-border: rgba(100, 180, 255, 0.15);
-  --glass-shadow: rgba(0, 0, 0, 0.5);
+  --text-secondary: #a9c0dc;
+  --glass-bg: rgba(10, 22, 40, 0.96);
+  --glass-border: rgba(150, 190, 230, 0.28);
+  --glass-shadow: rgba(0, 0, 0, 0.38);
   --accent: #00d4ff;
   --accent-secondary: #7b5cff;
-  --accent-glow: rgba(0, 212, 255, 0.35);
-  --mic-color: #00d4ff;
-  --mic-glow: rgba(0, 212, 255, 0.5);
-  --copy-bg: rgba(0, 212, 255, 0.15);
-  --copy-border: rgba(0, 212, 255, 0.35);
-  --clear-bg: rgba(255, 75, 100, 0.15);
-  --clear-border: rgba(255, 75, 100, 0.4);
+  --accent-glow: rgba(0, 212, 255, 0.25);
+  --mic-glow: rgba(0, 212, 255, 0.28);
+  --copy-bg: rgba(0, 212, 255, 0.12);
+  --copy-border: rgba(0, 212, 255, 0.5);
+  --clear-bg: rgba(255, 75, 100, 0.12);
+  --clear-border: rgba(255, 75, 100, 0.5);
+  --clear-color: #ff7184;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
 
 body {
   font-family: var(--font-family);
@@ -64,201 +68,770 @@ body {
   position: relative;
 }
 
-/* Background Animation (হালকা করা হয়েছে পারফরম্যান্সের জন্য) */
+/* Background Animation */
 .bg-animation-container {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; pointer-events: none;
-  background: radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 123, 255, 0.05) 0%, transparent 50%),
-              linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #ffffff;
 }
+
 html.dark-mode .bg-animation-container {
-  background: radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-              radial-gradient(ellipse 60% 40% at 80% 60%, rgba(123, 92, 255, 0.06) 0%, transparent 50%),
-              linear-gradient(180deg, #050a15 0%, #0a1628 50%, #0d1f3c 100%);
+  background: linear-gradient(180deg, #050a15 0%, #0a1628 55%, #0d1f3c 100%);
 }
 
 .mesh-grid {
-  position: absolute; top: 0; left: 0; width: 200%; height: 200%;
-  background-image: linear-gradient(rgba(0, 123, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 123, 255, 0.03) 1px, transparent 1px);
-  background-size: 95px 95px; animation: meshMove 30s linear infinite; opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-size: 95px 95px;
+  animation: meshMove 30s linear infinite;
+  opacity: 0.6;
 }
-html.dark-mode .mesh-grid {
-  background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+
+@keyframes meshMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-50%, -50%); }
 }
-@keyframes meshMove { 0% { transform: translate(0, 0); } 100% { transform: translate(-50%, -50%); } }
+
+.visualizer-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0 5%;
+  opacity: 0.4;
+}
+
+.visualizer-bar {
+  width: 3px;
+  background: linear-gradient(to top, var(--accent), var(--accent-secondary));
+  border-radius: 3px 3px 0 0;
+  animation: visualize 1.2s ease-in-out infinite;
+  transform-origin: bottom;
+}
+
+.visualizer-bar:nth-child(odd) {
+  height: 45%;
+  animation-delay: 0.2s;
+}
+
+.visualizer-bar:nth-child(even) {
+  height: 65%;
+  animation-delay: 0.5s;
+}
+
+@keyframes visualize {
+  0%, 100% { transform: scaleY(0.3); opacity: 0.3; }
+  50% { transform: scaleY(1); opacity: 0.8; }
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(75px);
+  animation: ambientPulse 10s ease-in-out infinite;
+}
+
+.ambient-orb:nth-child(1) {
+  width: 395px;
+  height: 395px;
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.15), transparent 70%);
+}
+
+.ambient-orb:nth-child(2) {
+  width: 345px;
+  height: 345px;
+  bottom: -10%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(123, 92, 255, 0.12), transparent 70%);
+  animation-delay: 3s;
+}
+
+@keyframes ambientPulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+}
 
 /* Main Content */
 .main-content {
-  position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: flex-start; padding: 80px 20px 40px;
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 76px 20px 32px;
   animation: mainEntrance 0.8s ease-out both;
 }
-@keyframes mainEntrance { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes mainEntrance {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .title-container {
-  display: flex; align-items: center; justify-content: center; gap: 15px;
-  background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-  border-radius: 12px; padding: 12px 30px; margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 12px 30px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 20px var(--glass-shadow);
 }
+
 .page-title {
-  font-family: 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--text-primary);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
   background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
 }
 
-/* Theme Toggle (BB-8) - Original Restored */
+/* BB-8 Theme Toggle */
 .theme-toggle-container {
-  position: fixed; top: 15px; right: 15px; z-index: 1000; transform: scale(0.55); transform-origin: right top;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  transform: scale(0.68);
+  transform-origin: right top;
 }
-.bb8-toggle { --toggle-size: 16px; --toggle-width: 10.625em; --toggle-height: 5.625em; --toggle-offset: calc((var(--toggle-height) - 4.375em) / 2); --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat; --radius: 99em; --transition: 0.4s; --accent: #de7d2f; --bb8-bg: #fff; cursor: pointer; }
-.bb8-toggle__checkbox { display: none; }
-.bb8-toggle__container { width: var(--toggle-width); height: var(--toggle-height); background: var(--toggle-bg); background-size: 100% 11.25em; background-position-y: -5.625em; border-radius: var(--radius); position: relative; transition: var(--transition); }
-.bb8 { display: flex; flex-direction: column; align-items: center; position: absolute; top: calc(var(--toggle-offset) - 1.5em); left: var(--toggle-offset); transition: var(--transition); z-index: 2; }
-.bb8__head-container { position: relative; transition: var(--transition); transform-origin: 1.25em 3.75em; }
-.bb8__head { overflow: hidden; margin-bottom: -0.188em; width: 2.5em; height: 1.688em; background: linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em), linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em), linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em); border-radius: var(--radius) var(--radius) 0 0; position: relative; filter: drop-shadow(0 0.063em 0.125em gray); }
-.bb8__head::before { content: ""; position: absolute; width: 0.563em; height: 0.563em; background: radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent), radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%), linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em); border-radius: var(--radius); top: 0.413em; left: 50%; transform: translate(-50%); box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg); transition: var(--transition); }
-.bb8__antenna { position: absolute; transform: translateY(-90%); width: 0.059em; border-radius: var(--radius) var(--radius) 0 0; transition: var(--transition); }
-.bb8__antenna:nth-child(1) { height: 0.938em; right: 0.938em; background: linear-gradient(#000 0.188em, silver 0.188em); }
-.bb8__antenna:nth-child(2) { height: 0.375em; left: 50%; transform: translate(-50%, -90%); background: silver; }
-.bb8__body { width: 4.375em; height: 4.375em; background: var(--bb8-bg); border-radius: var(--radius); position: relative; overflow: hidden; transition: var(--transition); transform: rotate(45deg); background: linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%), linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%); }
-.bb8-toggle__checkbox:checked + .bb8-toggle__container { background-position-y: 0; }
-.bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 { left: calc(100% - 4.375em - var(--toggle-offset)); }
-.bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body { transform: rotate(225deg); }
-.bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container { transform: rotate(25deg); }
-.bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container { transform: rotate(-25deg); }
+
+.bb8-toggle {
+  --toggle-size: 16px;
+  --toggle-width: 10.625em;
+  --toggle-height: 5.625em;
+  --toggle-offset: calc((var(--toggle-height) - 4.375em) / 2);
+  --toggle-bg: linear-gradient(#2c4770, #070e2b 35%, #628cac 50% 70%, #a6c5d4) no-repeat;
+  --radius: 99em;
+  --transition: 0.4s;
+  --accent: #de7d2f;
+  --bb8-bg: #fff;
+  cursor: pointer;
+}
+
+.bb8-toggle__checkbox {
+  display: none;
+}
+
+.bb8-toggle__container {
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background: var(--toggle-bg);
+  background-size: 100% 11.25em;
+  background-position-y: -5.625em;
+  border-radius: var(--radius);
+  position: relative;
+  transition: var(--transition);
+}
+
+.bb8 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: calc(var(--toggle-offset) - 1.5em);
+  left: var(--toggle-offset);
+  transition: var(--transition);
+  z-index: 2;
+}
+
+.bb8__head-container {
+  position: relative;
+  transition: var(--transition);
+  transform-origin: 1.25em 3.75em;
+}
+
+.bb8__head {
+  overflow: hidden;
+  margin-bottom: -0.188em;
+  width: 2.5em;
+  height: 1.688em;
+  background:
+    linear-gradient(transparent 0.063em, dimgray 0.063em 0.313em, transparent 0.313em 0.375em, var(--accent) 0.375em 0.5em, transparent 0.5em 1.313em, silver 1.313em 1.438em, transparent 1.438em),
+    linear-gradient(45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em),
+    linear-gradient(-45deg, transparent 0.188em, var(--bb8-bg) 0.188em 1.25em, transparent 1.25em),
+    linear-gradient(var(--bb8-bg) 1.25em, transparent 1.25em);
+  border-radius: var(--radius) var(--radius) 0 0;
+  position: relative;
+  filter: drop-shadow(0 0.063em 0.125em gray);
+}
+
+.bb8__head::before {
+  content: "";
+  position: absolute;
+  width: 0.563em;
+  height: 0.563em;
+  background:
+    radial-gradient(0.125em circle at 0.25em 0.375em, red, transparent),
+    radial-gradient(0.063em circle at 0.375em 0.188em, var(--bb8-bg) 50%, transparent 100%),
+    linear-gradient(45deg, #000 0.188em, dimgray 0.313em 0.375em, #000 0.5em);
+  border-radius: var(--radius);
+  top: 0.413em;
+  left: 50%;
+  transform: translate(-50%);
+  box-shadow: 0 0 0 0.089em lightgray, 0.563em 0.281em 0 -0.148em, 0.563em 0.281em 0 -0.1em var(--bb8-bg);
+  transition: var(--transition);
+}
+
+.bb8__antenna {
+  position: absolute;
+  transform: translateY(-90%);
+  width: 0.059em;
+  border-radius: var(--radius) var(--radius) 0 0;
+  transition: var(--transition);
+}
+
+.bb8__antenna:nth-child(1) {
+  height: 0.938em;
+  right: 0.938em;
+  background: linear-gradient(#000 0.188em, silver 0.188em);
+}
+
+.bb8__antenna:nth-child(2) {
+  height: 0.375em;
+  left: 50%;
+  transform: translate(-50%, -90%);
+  background: silver;
+}
+
+.bb8__body {
+  width: 4.375em;
+  height: 4.375em;
+  background: var(--bb8-bg);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  transform: rotate(45deg);
+  background:
+    linear-gradient(-90deg, var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%),
+    linear-gradient(var(--bb8-bg) 4%, var(--accent) 4% 10%, transparent 10% 90%, var(--accent) 90% 96%, var(--bb8-bg) 96%);
+}
+
+.bb8-toggle__checkbox:checked + .bb8-toggle__container {
+  background-position-y: 0;
+}
+
+.bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8 {
+  left: calc(100% - 4.375em - var(--toggle-offset));
+}
+
+.bb8-toggle__checkbox:checked + .bb8-toggle__container .bb8__body {
+  transform: rotate(225deg);
+}
+
+.bb8-toggle__checkbox:active + .bb8-toggle__container .bb8__head-container {
+  transform: rotate(25deg);
+}
+
+.bb8-toggle__checkbox:checked:active + .bb8-toggle__container .bb8__head-container {
+  transform: rotate(-25deg);
+}
 
 /* Language Selector */
-.language-selector { width: 100%; max-width: 600px; margin-bottom: 15px; }
-.lang-options { display: flex; gap: 8px; padding: 8px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 12px; }
-.lang-btn { flex: 1; padding: 10px; border: 1px solid var(--glass-border); border-radius: 8px; background: transparent; color: var(--text-secondary); font-family: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
-.lang-btn.active { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-color: var(--accent); color: #fff; box-shadow: 0 4px 15px var(--accent-glow); }
+.language-selector {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 15px;
+}
+
+.lang-options {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+}
+
+.lang-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
 
 /* Text Display */
 .text-display-container {
-  width: 100%; max-width: 600px; min-height: 300px; background: var(--glass-bg);
-  backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px;
-  box-shadow: 0 8px 32px var(--glass-shadow); padding: 20px; position: relative; transition: all 0.3s ease;
+  width: 100%;
+  max-width: 760px;
+  min-height: 300px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px var(--glass-shadow);
+  padding: 20px;
+  position: relative;
+  transition: all 0.3s ease;
 }
+
 .text-display {
-  width: 100%; min-height: 250px; background: transparent; border: none; outline: none; resize: none;
-  font-family: var(--font-family); font-size: 1.3rem; line-height: 1.8; color: var(--text-primary);
-  overflow-y: auto; max-height: 50vh;
+  width: 100%;
+  min-height: 250px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: var(--font-family);
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  overflow-y: auto;
+  max-height: 50vh;
 }
-.text-display.editable { background: var(--copy-bg); border-radius: 8px; padding: 10px; border: 1px dashed var(--accent); }
-.text-display::-webkit-scrollbar { width: 6px; }
-.text-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+.text-display.editable {
+  background: rgba(0, 212, 255, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.text-display::-webkit-scrollbar {
+  width: 6px;
+}
+
+.text-display::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
 
 /* Typing Circle */
-.typing-circle-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; pointer-events: none; }
-.typing-circle-container.active { display: block; }
-.typing-circle { width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--accent); animation: spin 1s linear infinite; position: relative; }
-.typing-circle::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border-radius: 50%; border: 2px solid transparent; border-bottom-color: rgba(0, 123, 255, 0.5); animation: spin 0.8s linear infinite reverse; }
-html.dark-mode .typing-circle::before { border-bottom-color: rgba(0, 212, 255, 0.5); }
-@keyframes spin { to { transform: rotate(360deg); } }
+.typing-circle-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  pointer-events: none;
+}
+
+.typing-circle-container.active {
+  display: block;
+}
+
+.typing-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--accent);
+  animation: spin 1s linear infinite;
+  position: relative;
+}
+
+.typing-circle::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-bottom-color: rgba(0, 212, 255, 0.5);
+  animation: spin 0.8s linear infinite reverse;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 /* Mic Button */
-.mic-container { margin-top: 25px; display: flex; flex-direction: column; align-items: center; }
-.mic-btn {
-  width: 75px; height: 75px; border-radius: 50%; border: none;
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s ease; box-shadow: 0 4px 20px var(--mic-glow);
+.mic-container {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.mic-btn:active { transform: scale(0.95); }
-.mic-btn.listening { animation: micPulse 1.5s ease-in-out infinite; background: linear-gradient(135deg, #ff4b64, #ff7b8a); box-shadow: 0 4px 20px rgba(255, 75, 100, 0.6); }
-@keyframes micPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 75, 100, 0.6); } 50% { box-shadow: 0 0 0 15px rgba(255, 75, 100, 0); } }
-.mic-status { margin-top: 10px; font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; }
-.mic-status.active { color: #ff4b64; animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity: 0.5; } }
+
+.mic-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px var(--mic-glow);
+}
+
+.mic-btn:active {
+  transform: scale(0.95);
+}
+
+.mic-btn.listening {
+  animation: micPulse 1.5s ease-in-out infinite;
+  background: linear-gradient(135deg, #ff4b64, #ff7b8a);
+  box-shadow: 0 4px 20px rgba(255, 75, 100, 0.6);
+}
+
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 75, 100, 0.6); }
+  50% { box-shadow: 0 0 0 15px rgba(255, 75, 100, 0); }
+}
+
+.mic-status {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.mic-status.active {
+  color: #ff4b64;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}
 
 /* Action Buttons */
-.action-buttons { display: flex; gap: 10px; margin-top: 20px; justify-content: center; width: 100%; max-width: 600px; flex-wrap: wrap; }
-.action-btn {
-  display: flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 8px;
-  border: 1px solid; background: transparent; font-family: inherit; font-size: 0.95rem; font-weight: 600;
-  cursor: pointer; transition: all 0.3s ease;
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  flex-wrap: wrap;
 }
-.edit-btn { border-color: var(--copy-border); color: var(--accent); }
-.edit-btn:hover, .edit-btn.active { background: var(--copy-bg); transform: translateY(-2px); }
-.copy-btn { border-color: var(--copy-border); color: var(--accent); }
-.copy-btn:hover { background: var(--copy-bg); transform: translateY(-2px); }
-.clear-btn { border-color: var(--clear-border); color: var(--clear-color); }
-.clear-btn:hover { background: var(--clear-bg); transform: translateY(-2px); }
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  border-color: var(--copy-border);
+  color: var(--accent);
+}
+
+.edit-btn:hover,
+.edit-btn.active {
+  background: var(--copy-bg);
+  transform: translateY(-2px);
+}
+
+.copy-btn {
+  border-color: var(--copy-border);
+  color: var(--accent);
+}
+
+.copy-btn:hover {
+  background: var(--copy-bg);
+  transform: translateY(-2px);
+}
+
+.clear-btn {
+  border-color: var(--clear-border);
+  color: var(--clear-color);
+}
+
+.clear-btn:hover {
+  background: var(--clear-bg);
+  transform: translateY(-2px);
+}
 
 .undo-btn {
-  display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
-  border-radius: 8px; border: 1px solid var(--accent); background: var(--copy-bg);
-  color: var(--accent); cursor: pointer; transition: all 0.3s ease; opacity: 0; visibility: hidden;
-  transform: translateY(5px); margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--copy-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  margin-top: 10px;
 }
-.undo-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
-.undo-btn:hover { background: var(--accent); color: #fff; }
+
+.undo-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.undo-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
 
 /* Toast */
 .toast {
-  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
   background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
-  box-shadow: 0 4px 20px var(--accent-glow); z-index: 9999; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  pointer-events: none; white-space: nowrap;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 20px var(--accent-glow);
+  z-index: 9999;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  white-space: nowrap;
 }
-.toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ================= MOBILE OPTIMIZATION ================= */
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile Layout */
 @media (max-width: 768px) {
-  .mesh-grid { display: none; } /* Save mobile battery */
-  
-  .main-content { padding: 70px 15px 140px; } 
-  
-  .title-container { padding: 10px 20px; margin-bottom: 15px; }
-  .page-title { font-size: 1.3rem; }
-  
-  .text-display-container { min-height: 250px; padding: 15px; }
-  .text-display { font-size: 1.15rem; min-height: 200px; }
-  
-  /* Mobile Layout: Actions ABOVE Mic, Mic at bottom */
+  .visualizer-container,
+  .mesh-grid {
+    display: none;
+  }
+
+  .ambient-orb {
+    display: none;
+  }
+
+  .main-content {
+    padding: 68px 12px 250px;
+  }
+
+  .title-container {
+    padding: 9px 16px;
+    margin-bottom: 12px;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .language-selector {
+    margin-bottom: 12px;
+  }
+
+  .lang-options {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .lang-btn {
+    padding: 10px 8px;
+  }
+
+  .text-display-container {
+    min-height: 220px;
+    padding: 12px;
+  }
+
+  .text-display {
+    font-size: 1.08rem;
+    min-height: 190px;
+    max-height: 42vh;
+  }
+
+  /* Bottom action panel */
   .action-buttons {
-    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
-    width: 92%; max-width: 400px; justify-content: space-between; z-index: 99; margin-top: 0; gap: 8px;
-    background: var(--glass-bg); backdrop-filter: blur(15px); padding: 10px; border-radius: 16px;
-    border: 1px solid var(--glass-border); box-shadow: 0 4px 20px var(--glass-shadow);
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 24px);
+    max-width: 460px;
+    justify-content: space-between;
+    z-index: 99;
+    margin-top: 0;
+    gap: 7px;
+    background: #ffffff;
+    padding: 12px 9px 8px;
+    border: 2px solid #111111;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
   }
-  
-  .action-btn { padding: 12px 8px; font-size: 0.85rem; flex: 1; justify-content: center; }
-  .btn-text { display: none; } 
-  .btn-icon { font-size: 1.4rem; }
-  
+
+  .action-buttons::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: #111111;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .action-btn {
+    padding: 9px 7px;
+    font-size: 0.82rem;
+    flex: 1;
+    justify-content: center;
+    color: #111111;
+    border-color: #111111;
+    min-width: 0;
+  }
+
+  .btn-text {
+    display: inline;
+  }
+
+  .btn-icon {
+    font-size: 1.05rem;
+  }
+
   .mic-container {
-    position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 100;
-    background: var(--glass-bg); backdrop-filter: blur(15px);
-    padding: 10px 35px; border-radius: 40px; border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px var(--glass-shadow);
+    position: fixed;
+    bottom: 103px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: #ffffff;
+    padding: 8px 24px 7px;
+    border-radius: 30px;
+    border: 1px solid #111111;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.10);
   }
-  
-  .mic-btn { width: 65px; height: 65px; }
-  .mic-status { margin-top: 5px; font-size: 0.8rem; }
-  
+
+  .mic-btn {
+    width: 58px;
+    height: 58px;
+  }
+
+  .mic-status {
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: #111111;
+    white-space: nowrap;
+  }
+
+  .mic-status.active {
+    color: #c91f3d;
+  }
+
   .undo-btn-container {
-    position: absolute; top: 10px; right: 10px; z-index: 99; margin-top: 0; width: auto;
+    position: fixed;
+    bottom: 174px;
+    right: 16px;
+    z-index: 99;
+    margin-top: 0;
+    width: auto;
   }
-  .undo-btn { width: 36px; height: 36px; border-radius: 50%; }
+
+  .undo-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  html.dark-mode .action-buttons,
+  html.dark-mode .mic-container {
+    background: #0a1628;
+    border-color: #dce8f5;
+  }
+
+  html.dark-mode .action-buttons::before {
+    background: #dce8f5;
+  }
+
+  html.dark-mode .action-btn,
+  html.dark-mode .mic-status {
+    color: #e8f4ff;
+    border-color: #9bb4d1;
+  }
 }
 
 @media (min-width: 769px) {
-  .btn-text { display: inline; }
+  .btn-text {
+    display: inline;
+  }
+
+  .main-content {
+    padding-bottom: 36px;
+  }
 }
 </style>
 </head>
-<body>
 
+<body>
 <div class="bg-animation-container">
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
   <div class="mesh-grid"></div>
+
+  <div class="visualizer-container">
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+    <div class="visualizer-bar"></div>
+  </div>
 </div>
 
-<!-- Theme Toggle (Unchecked = Light/White Default, Checked = Dark) -->
+<!-- BB-8 Theme Toggle -->
 <div class="theme-toggle-container">
   <label class="bb8-toggle">
     <input class="bb8-toggle__checkbox" type="checkbox" id="themeToggle">
+
     <div class="bb8-toggle__container">
       <div class="bb8">
         <div class="bb8__head-container">
@@ -277,7 +850,7 @@ html.dark-mode .typing-circle::before { border-bottom-color: rgba(0, 212, 255, 0
   <div class="title-container">
     <h1 class="page-title">Voice to Text</h1>
   </div>
-  
+
   <div class="language-selector">
     <div class="lang-options">
       <button class="lang-btn active" data-lang="bn-BD" onclick="selectLanguage(this)">বাংলা</button>
@@ -289,17 +862,28 @@ html.dark-mode .typing-circle::before { border-bottom-color: rgba(0, 212, 255, 0
     <div class="typing-circle-container" id="typingCircle">
       <div class="typing-circle"></div>
     </div>
-    
-    <!-- Undo button moved inside container for better mobile placement -->
-    <div class="undo-btn-container">
-      <button class="undo-btn" id="undoBtn" onclick="undoClear()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
-        </svg>
-      </button>
-    </div>
 
-    <textarea class="text-display" id="textDisplay" placeholder="মাইক চাপুন এবং কথা বলুন শুরু করুন..." readonly></textarea>
+    <textarea
+      class="text-display"
+      id="textDisplay"
+      placeholder="মাইক চাপুন এবং কথা বলা শুরু করুন..."
+      readonly
+    ></textarea>
+  </div>
+
+  <div class="mic-container">
+    <button class="mic-btn" id="micBtn" onclick="toggleListening()">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    </button>
+
+    <span class="mic-status" id="micStatus">মাইক চাপুন এবং কথা বলুন</span>
   </div>
 
   <div class="action-buttons">
@@ -307,44 +891,44 @@ html.dark-mode .typing-circle::before { border-bottom-color: rgba(0, 212, 255, 0
       <span class="btn-icon">✏️</span>
       <span class="btn-text" id="editBtnText">এডিট করুন</span>
     </button>
+
     <button class="action-btn copy-btn" onclick="copyText()">
       <span class="btn-icon">📋</span>
       <span class="btn-text">কপি করুন</span>
     </button>
+
     <button class="action-btn clear-btn" onclick="clearText()">
       <span class="btn-icon">🗑️</span>
       <span class="btn-text">মুছে ফেলুন</span>
     </button>
   </div>
 
-  <div class="mic-container">
-    <button class="mic-btn" id="micBtn" onclick="toggleListening()">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
+  <div class="undo-btn-container">
+    <button class="undo-btn" id="undoBtn" onclick="undoClear()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7v6h6"/>
+        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
       </svg>
     </button>
-    <span class="mic-status" id="micStatus">মাইক চাপুন এবং কথা বলুন</span>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// State
 let isListening = false;
 let isEditMode = false;
 let recognition = null;
 let selectedLang = 'bn-BD';
 let restartTimeout = null;
-
-// Robust transcript storage to prevent duplication and deletion bugs
-let finalTranscript = '';
+let baseTranscript = '';
+let interimTranscript = '';
 let deletedText = '';
+let stopRequested = false;
+let runToken = 0;
 
-// Elements
 const micBtn = document.getElementById('micBtn');
 const micStatus = document.getElementById('micStatus');
 const textDisplay = document.getElementById('textDisplay');
@@ -355,105 +939,184 @@ const editBtn = document.getElementById('editBtn');
 const editBtnText = document.getElementById('editBtnText');
 const undoBtn = document.getElementById('undoBtn');
 
-// Language Selection
 function selectLanguage(btn) {
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  if (btn.dataset.lang === selectedLang) return;
+
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.remove('active');
+  });
+
   btn.classList.add('active');
   selectedLang = btn.dataset.lang;
-  
-  if (recognition) {
-    recognition.lang = selectedLang;
-  }
-  
-  const placeholders = {
-    'bn-BD': 'মাইক চাপুন এবং কথা বলুন শুরু করুন...',
-    'en-US': 'Press the mic and start speaking...'
-  };
-  textDisplay.placeholder = placeholders[selectedLang];
-  
-  const statusText = {
-    'bn-BD': 'মাইক চাপুন এবং কথা বলুন',
-    'en-US': 'Press mic to speak'
-  };
-  if (!isListening) {
-    micStatus.textContent = statusText[selectedLang];
-  }
-  
+
+  textDisplay.placeholder = selectedLang === 'bn-BD'
+    ? 'মাইক চাপুন এবং কথা বলা শুরু করুন...'
+    : 'Press the mic and start speaking...';
+
   if (isListening) {
     stopListening();
-    setTimeout(() => startListening(), 500);
+    window.setTimeout(startListening, 250);
+  } else {
+    micStatus.textContent = selectedLang === 'bn-BD'
+      ? 'মাইক চাপুন এবং কথা বলুন'
+      : 'Press mic to speak';
   }
 }
 
-// Speech Recognition Setup (FIXED LOGIC)
-function initSpeechRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+function renderTranscript() {
+  const parts = [
+    baseTranscript.trimEnd(),
+    interimTranscript.trim()
+  ].filter(Boolean);
+
+  textDisplay.value = parts.join(parts.length > 1 ? ' ' : '');
+  textDisplay.scrollTop = textDisplay.scrollHeight;
+}
+
+function appendFinalTranscript(text) {
+  const clean = String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!clean) return;
+
+  // Prevent repeated final phrases after browser reconnection.
+  const current = baseTranscript.trimEnd();
+  const tail = current
+    .split(/\s+/)
+    .slice(-Math.max(8, clean.split(/\s+/).length + 2))
+    .join(' ');
+
+  if (tail === clean || tail.endsWith(' ' + clean)) return;
+
+  baseTranscript = current ? current + ' ' + clean : clean;
+  interimTranscript = '';
+  renderTranscript();
+}
+
+function createRecognition(token) {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
   if (!SpeechRecognition) {
-    showToast('❌ আপনার ব্রাউজার ভয়েস রিকগনিশন সাপোর্ট করে না।');
-    return null;
+    showToast('আপনার ব্রাউজার ভয়েস রিকগনিশন সাপোর্ট করে না। Chrome-এ চেষ্টা করুন।');
+    isListening = false;
+    updateMicUI(false);
+    return;
   }
-  
+
   const recog = new SpeechRecognition();
+  const finalizedIndexes = new Set();
+
   recog.lang = selectedLang;
   recog.continuous = true;
   recog.interimResults = true;
   recog.maxAlternatives = 1;
-  
+
   recog.onstart = () => {
-    isListening = true;
-    micBtn.classList.add('listening');
-    micStatus.textContent = selectedLang === 'bn-BD' ? 'শুনছি... (কথা বলুন)' : 'Listening...';
-    micStatus.classList.add('active');
-    typingCircle.classList.add('active');
+    if (token !== runToken || !isListening) return;
+
+    recognition = recog;
+    updateMicUI(true);
   };
-  
+
   recog.onresult = (event) => {
-    let currentInterim = '';
-    
-    // শুধুমাত্র নতুন রেজাল্ট প্রসেস করা হচ্ছে (event.resultIndex থেকে), যাতে আগের লেখা ডিলিট বা রিপিট না হয়
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const transcript = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        finalTranscript += transcript + ' '; // শুধু নতুন ফাইনাল টেক্সট যোগ হবে
-      } else {
-        currentInterim += transcript;
+    if (token !== runToken || !isListening || isEditMode) return;
+
+    const interimParts = [];
+
+    // Process each final result index only once.
+    for (let i = 0; i < event.results.length; i++) {
+      const result = event.results[i];
+      const transcript = result && result[0]
+        ? result[0].transcript
+        : '';
+
+      if (result.isFinal) {
+        if (!finalizedIndexes.has(i)) {
+          finalizedIndexes.add(i);
+          appendFinalTranscript(transcript);
+        }
+      } else if (transcript) {
+        interimParts.push(transcript.trim());
       }
     }
-    
-    // ডিসপ্লে আপডেট
-    textDisplay.value = finalTranscript + currentInterim;
-    textDisplay.scrollTop = textDisplay.scrollHeight;
+
+    interimTranscript = interimParts.join(' ').trim();
+    renderTranscript();
   };
-  
+
   recog.onerror = (event) => {
-    console.error('Speech error:', event.error);
-    if (event.error === 'not-allowed') {
-      showToast('❌ মাইক্রোফোন অ্যাক্সেস দেওয়া হয়নি।');
+    if (token !== runToken) return;
+
+    console.warn('Speech recognition error:', event.error);
+
+    if (
+      event.error === 'not-allowed' ||
+      event.error === 'service-not-allowed'
+    ) {
+      showToast('মাইক্রোফোন ব্যবহারের অনুমতি দিন।');
       stopListening();
-    } else if (event.error === 'no-speech') {
-      // Ignore no-speech, let it restart silently
-    } else {
-      showToast('⚠️ সমস্যা: ' + event.error);
+    } else if (event.error === 'audio-capture') {
+      showToast('মাইক্রোফোন পাওয়া যাচ্ছে না।');
+    } else if (event.error === 'network') {
+      showToast('নেটওয়ার্ক সমস্যা—সংযোগ পরীক্ষা করুন।');
     }
   };
-  
+
   recog.onend = () => {
-    if (isListening) {
-      if (restartTimeout) clearTimeout(restartTimeout);
-      // 400ms ডিলে দেওয়া হয়েছে যাতে মোবাইল ক্রোমের "ইকো/রিপিট" বাগ না হয়
-      restartTimeout = setTimeout(() => {
-        if (isListening) {
-          try {
-            recognition.start();
-          } catch (e) {
-            console.log("Restart prevented:", e);
-          }
-        }
-      }, 400);
+    if (recognition === recog) {
+      recognition = null;
     }
+
+    if (token !== runToken || !isListening || stopRequested) return;
+
+    interimTranscript = '';
+    renderTranscript();
+
+    // Start a fresh recognizer instance instead of reusing stale results.
+    if (restartTimeout) {
+      clearTimeout(restartTimeout);
+    }
+
+    restartTimeout = window.setTimeout(() => {
+      if (token === runToken && isListening && !stopRequested) {
+        createRecognition(token);
+      }
+    }, 180);
   };
-  
-  return recog;
+
+  try {
+    recog.start();
+  } catch (error) {
+    console.warn('Could not start speech recognition:', error);
+
+    if (token === runToken && isListening) {
+      if (restartTimeout) {
+        clearTimeout(restartTimeout);
+      }
+
+      restartTimeout = window.setTimeout(() => {
+        if (token === runToken && isListening && !stopRequested) {
+          createRecognition(token);
+        }
+      }, 350);
+    }
+  }
+}
+
+function updateMicUI(active) {
+  micBtn.classList.toggle('listening', active);
+  micStatus.classList.toggle('active', active);
+  typingCircle.classList.toggle('active', active);
+
+  micStatus.textContent = active
+    ? (selectedLang === 'bn-BD'
+        ? 'শুনছি... কথা বলুন'
+        : 'Listening... speak now')
+    : (selectedLang === 'bn-BD'
+        ? 'মাইক চাপুন এবং কথা বলুন'
+        : 'Press mic to speak');
 }
 
 function toggleListening() {
@@ -465,130 +1128,155 @@ function toggleListening() {
 }
 
 function startListening() {
-  recognition = initSpeechRecognition();
-  if (recognition) {
-    try {
-      recognition.start();
-    } catch(e) {
-      showToast('⚠️ ভয়েস রিকগনিশন শুরু করা যায়নি');
-    }
-  }
+  if (isListening) return;
+
+  stopRequested = false;
+  isListening = true;
+  runToken++;
+  interimTranscript = '';
+
+  updateMicUI(true);
+  createRecognition(runToken);
 }
 
 function stopListening() {
+  stopRequested = true;
   isListening = false;
+  runToken++;
+
   if (restartTimeout) {
     clearTimeout(restartTimeout);
     restartTimeout = null;
   }
-  if (recognition) {
-    recognition.stop();
-    recognition = null;
+
+  const oldRecognition = recognition;
+  recognition = null;
+
+  if (oldRecognition) {
+    oldRecognition.onresult = null;
+    oldRecognition.onend = null;
+
+    try {
+      oldRecognition.stop();
+    } catch (_) {}
   }
-  
-  // ইন্টারিম টেক্সট মুছে ফেলা হচ্ছে যাতে পরের বার সমস্যা না হয়
-  textDisplay.value = finalTranscript.trim();
-  
-  micBtn.classList.remove('listening');
-  const statusText = { 'bn-BD': 'মাইক চাপুন এবং কথা বলুন', 'en-US': 'Press mic to speak' };
-  micStatus.textContent = statusText[selectedLang];
-  micStatus.classList.remove('active');
-  typingCircle.classList.remove('active');
+
+  interimTranscript = '';
+  renderTranscript();
+  updateMicUI(false);
 }
 
-// Toggle Edit Mode
 function toggleEditMode() {
   isEditMode = !isEditMode;
+
   if (isEditMode) {
+    if (isListening) {
+      stopListening();
+    }
+
     textDisplay.removeAttribute('readonly');
     textDisplay.classList.add('editable');
     editBtn.classList.add('active');
     editBtnText.textContent = 'সেভ করুন';
-    showToast('✏️ এডিট মোড চালু আছে');
+
+    showToast('এডিট মোড চালু আছে');
     textDisplay.focus();
   } else {
     textDisplay.setAttribute('readonly', true);
     textDisplay.classList.remove('editable');
     editBtn.classList.remove('active');
     editBtnText.textContent = 'এডিট করুন';
-    
-    // এডিট করা টেক্সটকে ফাইনাল ট্রান্সক্রিপ্ট হিসেবে সেভ করা হচ্ছে
-    const editedText = textDisplay.value.trim();
-    finalTranscript = editedText ? editedText + ' ' : '';
-    textDisplay.value = finalTranscript.trim();
-    showToast('✅ পরিবর্তন সেভ হয়েছে');
+
+    baseTranscript = textDisplay.value.trim();
+    interimTranscript = '';
+
+    renderTranscript();
+    showToast('পরিবর্তন সেভ হয়েছে');
   }
 }
 
-// Copy Text
 function copyText() {
   const text = textDisplay.value.trim();
+
   if (!text) {
-    showToast('⚠️ কপি করার মতো কিছু নেই');
-    return;
+    return showToast('কপি করার মতো কিছু নেই');
   }
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('✅ টেক্সট কপি হয়েছে!');
-  }).catch(() => {
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('টেক্সট কপি হয়েছে'))
+      .catch(() => fallbackCopy());
+  } else {
+    fallbackCopy();
+  }
+
+  function fallbackCopy() {
+    textDisplay.removeAttribute('readonly');
     textDisplay.select();
-    document.execCommand('copy');
-    showToast('✅ টেক্সট কপি হয়েছে!');
-  });
+
+    try {
+      document.execCommand('copy');
+      showToast('টেক্সট কপি হয়েছে');
+    } catch (_) {
+      showToast('কপি করা যায়নি—টেক্সট সিলেক্ট করে কপি করুন');
+    }
+
+    if (!isEditMode) {
+      textDisplay.setAttribute('readonly', true);
+    }
+
+    textDisplay.setSelectionRange(
+      textDisplay.value.length,
+      textDisplay.value.length
+    );
+  }
 }
 
-// Clear Text
 function clearText() {
-  const textToClear = textDisplay.value.trim();
-  if (!textToClear) {
-    showToast('⚠️ মুছে ফেলার মতো কিছু নেই');
-    return;
+  if (!textDisplay.value.trim()) {
+    return showToast('মুছে ফেলার মতো কিছু নেই');
   }
-  deletedText = textToClear;
-  finalTranscript = '';
+
+  deletedText = textDisplay.value;
+  baseTranscript = '';
+  interimTranscript = '';
   textDisplay.value = '';
+
   undoBtn.classList.add('show');
-  showToast('🗑️ সব টেক্সট মুছে ফেলা হয়েছে');
-  
-  const container = document.querySelector('.text-display-container');
-  container.style.transform = 'scale(0.98)';
-  container.style.opacity = '0.7';
-  setTimeout(() => {
-    container.style.transform = 'scale(1)';
-    container.style.opacity = '1';
-  }, 300);
+  showToast('সব টেক্সট মুছে ফেলা হয়েছে');
 }
 
-// Undo Clear
 function undoClear() {
-  if (deletedText) {
-    textDisplay.value = deletedText;
-    finalTranscript = deletedText + (deletedText && !deletedText.endsWith(' ') ? ' ' : '');
-    showToast('✅ টেক্সট পুনরুদ্ধার করা হয়েছে');
-    undoBtn.classList.remove('show');
-    deletedText = '';
-  }
+  if (!deletedText) return;
+
+  baseTranscript = deletedText.trim();
+  interimTranscript = '';
+
+  renderTranscript();
+  undoBtn.classList.remove('show');
+  deletedText = '';
+
+  showToast('টেক্সট পুনরুদ্ধার করা হয়েছে');
 }
 
-// Show Toast
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
+
+  window.setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
 }
 
-// Theme Toggle (Light Default -> Dark on Check)
-themeToggle.addEventListener('change', function() {
-  if (this.checked) {
-    document.documentElement.classList.add('dark-mode');
-  } else {
-    document.documentElement.classList.remove('dark-mode');
-  }
+// BB-8 theme switch
+themeToggle.addEventListener('change', function () {
+  document.documentElement.classList.toggle('dark-mode', this.checked);
 });
 
-// Keyboard shortcut (Ctrl + Space)
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space' && e.ctrlKey) {
-    e.preventDefault();
+// Keyboard shortcut: Ctrl + Space
+document.addEventListener('keydown', (event) => {
+  if (event.code === 'Space' && event.ctrlKey) {
+    event.preventDefault();
     toggleListening();
   }
 });
