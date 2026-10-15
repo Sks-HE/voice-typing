@@ -9,7 +9,31 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Orbitron:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ডিফল্ট থিম: সাদা (Light Mode) */
 :root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f0f4f8;
+  --text-primary: #0a1628; /* কালো/গাঢ় নীল লেখা */
+  --text-secondary: #4a5568;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.2); /* কালো বর্ডার */
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --accent: #007bff;
+  --accent-secondary: #0056b3;
+  --accent-glow: rgba(0, 123, 255, 0.2);
+  --mic-color: #007bff;
+  --mic-glow: rgba(0, 123, 255, 0.4);
+  --copy-bg: rgba(0, 123, 255, 0.1);
+  --copy-border: rgba(0, 123, 255, 0.3);
+  --clear-bg: rgba(255, 75, 100, 0.1);
+  --clear-border: rgba(255, 75, 100, 0.3);
+  --clear-color: #ff4b64;
+  --font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+  --transition-speed: 0.4s;
+}
+
+/* ডার্ক মোড (যখন বাটন চেঞ্জ করা হবে) */
+html.dark-mode {
   --bg-primary: #050a15;
   --bg-secondary: #0a1628;
   --text-primary: #e8f4ff;
@@ -26,20 +50,6 @@
   --copy-border: rgba(0, 212, 255, 0.35);
   --clear-bg: rgba(255, 75, 100, 0.15);
   --clear-border: rgba(255, 75, 100, 0.4);
-  --clear-color: #ff4b64;
-  --font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
-  --transition-speed: 0.4s;
-}
-
-html.light-mode {
-  --bg-primary: #e8f4ff;
-  --bg-secondary: #d0e8ff;
-  --text-primary: #0a1628;
-  --text-secondary: #3a5a8a;
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 150, 200, 0.2);
-  --glass-shadow: rgba(0, 50, 100, 0.1);
-  --mic-glow: rgba(0, 150, 255, 0.3);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -54,43 +64,27 @@ body {
   position: relative;
 }
 
-/* Background Animation */
+/* Background Animation (হালকা করা হয়েছে পারফরম্যান্সের জন্য) */
 .bg-animation-container {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; pointer-events: none;
+  background: radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 123, 255, 0.05) 0%, transparent 50%),
+              linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+html.dark-mode .bg-animation-container {
   background: radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
               radial-gradient(ellipse 60% 40% at 80% 60%, rgba(123, 92, 255, 0.06) 0%, transparent 50%),
               linear-gradient(180deg, #050a15 0%, #0a1628 50%, #0d1f3c 100%);
 }
-html.light-mode .bg-animation-container {
-  background: radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 180, 255, 0.08) 0%, transparent 50%),
-              linear-gradient(180deg, #e8f4ff 0%, #d0e8ff 50%, #c0d8f0 100%);
-}
 
 .mesh-grid {
   position: absolute; top: 0; left: 0; width: 200%; height: 200%;
-  background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(0, 123, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 123, 255, 0.03) 1px, transparent 1px);
   background-size: 95px 95px; animation: meshMove 30s linear infinite; opacity: 0.6;
 }
+html.dark-mode .mesh-grid {
+  background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+}
 @keyframes meshMove { 0% { transform: translate(0, 0); } 100% { transform: translate(-50%, -50%); } }
-
-.visualizer-container {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; display: flex;
-  justify-content: space-around; align-items: flex-end; padding: 0 5%; opacity: 0.4;
-}
-.visualizer-bar {
-  width: 3px; background: linear-gradient(to top, var(--accent), var(--accent-secondary));
-  border-radius: 3px 3px 0 0; animation: visualize 1.2s ease-in-out infinite; transform-origin: bottom;
-}
-.visualizer-bar:nth-child(odd) { height: 45%; animation-delay: 0.2s; }
-.visualizer-bar:nth-child(even) { height: 65%; animation-delay: 0.5s; }
-@keyframes visualize { 0%, 100% { transform: scaleY(0.3); opacity: 0.3; } 50% { transform: scaleY(1); opacity: 0.8; } }
-
-.ambient-orb {
-  position: absolute; border-radius: 50%; filter: blur(75px); animation: ambientPulse 10s ease-in-out infinite;
-}
-.ambient-orb:nth-child(1) { width: 395px; height: 395px; top: -10%; left: -5%; background: radial-gradient(circle, rgba(0, 212, 255, 0.15), transparent 70%); }
-.ambient-orb:nth-child(2) { width: 345px; height: 345px; bottom: -10%; right: -5%; background: radial-gradient(circle, rgba(123, 92, 255, 0.12), transparent 70%); animation-delay: 3s; }
-@keyframes ambientPulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 0.7; } }
 
 /* Main Content */
 .main-content {
@@ -112,7 +106,7 @@ html.light-mode .bg-animation-container {
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;
 }
 
-/* Theme Toggle (BB-8) - Scaled down for better fit */
+/* Theme Toggle (BB-8) - Original Restored */
 .theme-toggle-container {
   position: fixed; top: 15px; right: 15px; z-index: 1000; transform: scale(0.55); transform-origin: right top;
 }
@@ -150,7 +144,7 @@ html.light-mode .bg-animation-container {
   font-family: var(--font-family); font-size: 1.3rem; line-height: 1.8; color: var(--text-primary);
   overflow-y: auto; max-height: 50vh;
 }
-.text-display.editable { background: rgba(0, 212, 255, 0.05); border-radius: 8px; padding: 10px; }
+.text-display.editable { background: var(--copy-bg); border-radius: 8px; padding: 10px; border: 1px dashed var(--accent); }
 .text-display::-webkit-scrollbar { width: 6px; }
 .text-display::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
@@ -158,13 +152,14 @@ html.light-mode .bg-animation-container {
 .typing-circle-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; pointer-events: none; }
 .typing-circle-container.active { display: block; }
 .typing-circle { width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--accent); animation: spin 1s linear infinite; position: relative; }
-.typing-circle::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border-radius: 50%; border: 2px solid transparent; border-bottom-color: rgba(0, 212, 255, 0.5); animation: spin 0.8s linear infinite reverse; }
+.typing-circle::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border-radius: 50%; border: 2px solid transparent; border-bottom-color: rgba(0, 123, 255, 0.5); animation: spin 0.8s linear infinite reverse; }
+html.dark-mode .typing-circle::before { border-bottom-color: rgba(0, 212, 255, 0.5); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Mic Button */
 .mic-container { margin-top: 25px; display: flex; flex-direction: column; align-items: center; }
 .mic-btn {
-  width: 70px; height: 70px; border-radius: 50%; border: none;
+  width: 75px; height: 75px; border-radius: 50%; border: none;
   background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
   color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: all 0.3s ease; box-shadow: 0 4px 20px var(--mic-glow);
@@ -211,11 +206,9 @@ html.light-mode .bg-animation-container {
 
 /* ================= MOBILE OPTIMIZATION ================= */
 @media (max-width: 768px) {
-  /* Performance: Disable heavy animations on mobile to save battery and prevent lag */
-  .visualizer-container, .mesh-grid { display: none; }
-  .ambient-orb { filter: blur(40px); opacity: 0.3; }
+  .mesh-grid { display: none; } /* Save mobile battery */
   
-  .main-content { padding: 70px 15px 160px; } /* Extra bottom padding for fixed controls */
+  .main-content { padding: 70px 15px 140px; } 
   
   .title-container { padding: 10px 20px; margin-bottom: 15px; }
   .page-title { font-size: 1.3rem; }
@@ -223,34 +216,32 @@ html.light-mode .bg-animation-container {
   .text-display-container { min-height: 250px; padding: 15px; }
   .text-display { font-size: 1.15rem; min-height: 200px; }
   
-  /* Fixed bottom controls for easy thumb access on mobile */
+  /* Mobile Layout: Actions ABOVE Mic, Mic at bottom */
   .action-buttons {
-    position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-    width: 92%; max-width: 450px; justify-content: space-between; z-index: 99; margin-top: 0; gap: 8px;
-    background: rgba(5, 10, 21, 0.8); backdrop-filter: blur(10px); padding: 10px; border-radius: 16px;
-    border: 1px solid var(--glass-border);
+    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
+    width: 92%; max-width: 400px; justify-content: space-between; z-index: 99; margin-top: 0; gap: 8px;
+    background: var(--glass-bg); backdrop-filter: blur(15px); padding: 10px; border-radius: 16px;
+    border: 1px solid var(--glass-border); box-shadow: 0 4px 20px var(--glass-shadow);
   }
-  html.light-mode .action-buttons { background: rgba(255, 255, 255, 0.8); }
   
   .action-btn { padding: 12px 8px; font-size: 0.85rem; flex: 1; justify-content: center; }
-  .btn-text { display: none; } /* Show only icons on small screens for cleaner look */
+  .btn-text { display: none; } 
   .btn-icon { font-size: 1.4rem; }
   
   .mic-container {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100;
-    background: rgba(10, 22, 40, 0.85); backdrop-filter: blur(12px);
-    padding: 10px 30px; border-radius: 40px; border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 100;
+    background: var(--glass-bg); backdrop-filter: blur(15px);
+    padding: 10px 35px; border-radius: 40px; border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px var(--glass-shadow);
   }
-  html.light-mode .mic-container { background: rgba(255, 255, 255, 0.85); }
   
-  .mic-btn { width: 60px; height: 60px; }
+  .mic-btn { width: 65px; height: 65px; }
   .mic-status { margin-top: 5px; font-size: 0.8rem; }
   
   .undo-btn-container {
-    position: fixed; bottom: 105px; right: 4%; z-index: 99; margin-top: 0; width: auto;
+    position: absolute; top: 10px; right: 10px; z-index: 99; margin-top: 0; width: auto;
   }
-  .undo-btn { width: 40px; height: 40px; border-radius: 50%; }
+  .undo-btn { width: 36px; height: 36px; border-radius: 50%; }
 }
 
 @media (min-width: 769px) {
@@ -261,17 +252,10 @@ html.light-mode .bg-animation-container {
 <body>
 
 <div class="bg-animation-container">
-  <div class="ambient-orb"></div>
-  <div class="ambient-orb"></div>
   <div class="mesh-grid"></div>
-  <div class="visualizer-container">
-    <div class="visualizer-bar"></div><div class="visualizer-bar"></div><div class="visualizer-bar"></div>
-    <div class="visualizer-bar"></div><div class="visualizer-bar"></div><div class="visualizer-bar"></div>
-    <div class="visualizer-bar"></div><div class="visualizer-bar"></div><div class="visualizer-bar"></div>
-  </div>
 </div>
 
-<!-- Theme Toggle -->
+<!-- Theme Toggle (Unchecked = Light/White Default, Checked = Dark) -->
 <div class="theme-toggle-container">
   <label class="bb8-toggle">
     <input class="bb8-toggle__checkbox" type="checkbox" id="themeToggle">
@@ -305,19 +289,17 @@ html.light-mode .bg-animation-container {
     <div class="typing-circle-container" id="typingCircle">
       <div class="typing-circle"></div>
     </div>
-    <textarea class="text-display" id="textDisplay" placeholder="মাইক চাপুন এবং কথা বলুন শুরু করুন..." readonly></textarea>
-  </div>
+    
+    <!-- Undo button moved inside container for better mobile placement -->
+    <div class="undo-btn-container">
+      <button class="undo-btn" id="undoBtn" onclick="undoClear()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+        </svg>
+      </button>
+    </div>
 
-  <div class="mic-container">
-    <button class="mic-btn" id="micBtn" onclick="toggleListening()">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
-      </svg>
-    </button>
-    <span class="mic-status" id="micStatus">মাইক চাপুন এবং কথা বলুন</span>
+    <textarea class="text-display" id="textDisplay" placeholder="মাইক চাপুন এবং কথা বলুন শুরু করুন..." readonly></textarea>
   </div>
 
   <div class="action-buttons">
@@ -334,13 +316,17 @@ html.light-mode .bg-animation-container {
       <span class="btn-text">মুছে ফেলুন</span>
     </button>
   </div>
-  
-  <div class="undo-btn-container">
-    <button class="undo-btn" id="undoBtn" onclick="undoClear()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+
+  <div class="mic-container">
+    <button class="mic-btn" id="micBtn" onclick="toggleListening()">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+        <line x1="8" y1="23" x2="16" y2="23"/>
       </svg>
     </button>
+    <span class="mic-status" id="micStatus">মাইক চাপুন এবং কথা বলুন</span>
   </div>
 </div>
 
@@ -354,9 +340,8 @@ let recognition = null;
 let selectedLang = 'bn-BD';
 let restartTimeout = null;
 
-// Robust transcript storage to prevent mobile duplication bug
-let baseTranscript = '';
-let currentSessionFinal = '';
+// Robust transcript storage to prevent duplication and deletion bugs
+let finalTranscript = '';
 let deletedText = '';
 
 // Elements
@@ -396,11 +381,11 @@ function selectLanguage(btn) {
   
   if (isListening) {
     stopListening();
-    setTimeout(() => startListening(), 600);
+    setTimeout(() => startListening(), 500);
   }
 }
 
-// Speech Recognition Setup
+// Speech Recognition Setup (FIXED LOGIC)
 function initSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -423,31 +408,20 @@ function initSpeechRecognition() {
   };
   
   recog.onresult = (event) => {
-    let sessionFinal = '';
-    let interim = '';
+    let currentInterim = '';
     
-    // Rebuild from index 0 to get the absolute truth of the current session
-    for (let i = 0; i < event.results.length; i++) {
+    // শুধুমাত্র নতুন রেজাল্ট প্রসেস করা হচ্ছে (event.resultIndex থেকে), যাতে আগের লেখা ডিলিট বা রিপিট না হয়
+    for (let i = event.resultIndex; i < event.results.length; i++) {
       const transcript = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
-        sessionFinal += transcript + ' ';
+        finalTranscript += transcript + ' '; // শুধু নতুন ফাইনাল টেক্সট যোগ হবে
       } else {
-        interim += transcript;
+        currentInterim += transcript;
       }
     }
     
-    currentSessionFinal = sessionFinal;
-    
-    // Construct display text safely
-    let displayText = baseTranscript;
-    if (currentSessionFinal) {
-      displayText += currentSessionFinal;
-    }
-    if (interim) {
-      displayText += (displayText && !displayText.endsWith(' ') ? ' ' : '') + interim;
-    }
-    
-    textDisplay.value = displayText.trim();
+    // ডিসপ্লে আপডেট
+    textDisplay.value = finalTranscript + currentInterim;
     textDisplay.scrollTop = textDisplay.scrollHeight;
   };
   
@@ -457,7 +431,7 @@ function initSpeechRecognition() {
       showToast('❌ মাইক্রোফোন অ্যাক্সেস দেওয়া হয়নি।');
       stopListening();
     } else if (event.error === 'no-speech') {
-      // Ignore no-speech, let it restart
+      // Ignore no-speech, let it restart silently
     } else {
       showToast('⚠️ সমস্যা: ' + event.error);
     }
@@ -465,14 +439,8 @@ function initSpeechRecognition() {
   
   recog.onend = () => {
     if (isListening) {
-      // CRITICAL: Bake the session final into base before restarting to prevent duplication
-      if (currentSessionFinal) {
-        baseTranscript += currentSessionFinal;
-        currentSessionFinal = '';
-      }
-      
       if (restartTimeout) clearTimeout(restartTimeout);
-      // 500ms delay is the magic number to prevent Android Chrome echo/repetition bug
+      // 400ms ডিলে দেওয়া হয়েছে যাতে মোবাইল ক্রোমের "ইকো/রিপিট" বাগ না হয়
       restartTimeout = setTimeout(() => {
         if (isListening) {
           try {
@@ -481,7 +449,7 @@ function initSpeechRecognition() {
             console.log("Restart prevented:", e);
           }
         }
-      }, 500);
+      }, 400);
     }
   };
   
@@ -518,16 +486,8 @@ function stopListening() {
     recognition = null;
   }
   
-  // Bake any remaining final text
-  if (currentSessionFinal) {
-    baseTranscript += currentSessionFinal;
-    currentSessionFinal = '';
-  }
-  
-  // If not in edit mode, ensure display matches base
-  if (!isEditMode) {
-    textDisplay.value = baseTranscript.trim();
-  }
+  // ইন্টারিম টেক্সট মুছে ফেলা হচ্ছে যাতে পরের বার সমস্যা না হয়
+  textDisplay.value = finalTranscript.trim();
   
   micBtn.classList.remove('listening');
   const statusText = { 'bn-BD': 'মাইক চাপুন এবং কথা বলুন', 'en-US': 'Press mic to speak' };
@@ -551,9 +511,11 @@ function toggleEditMode() {
     textDisplay.classList.remove('editable');
     editBtn.classList.remove('active');
     editBtnText.textContent = 'এডিট করুন';
-    // CRITICAL: Sync edited text back to baseTranscript so future voice appends correctly
+    
+    // এডিট করা টেক্সটকে ফাইনাল ট্রান্সক্রিপ্ট হিসেবে সেভ করা হচ্ছে
     const editedText = textDisplay.value.trim();
-    baseTranscript = editedText ? editedText + ' ' : '';
+    finalTranscript = editedText ? editedText + ' ' : '';
+    textDisplay.value = finalTranscript.trim();
     showToast('✅ পরিবর্তন সেভ হয়েছে');
   }
 }
@@ -582,8 +544,7 @@ function clearText() {
     return;
   }
   deletedText = textToClear;
-  baseTranscript = '';
-  currentSessionFinal = '';
+  finalTranscript = '';
   textDisplay.value = '';
   undoBtn.classList.add('show');
   showToast('🗑️ সব টেক্সট মুছে ফেলা হয়েছে');
@@ -601,7 +562,7 @@ function clearText() {
 function undoClear() {
   if (deletedText) {
     textDisplay.value = deletedText;
-    baseTranscript = deletedText + (deletedText && !deletedText.endsWith(' ') ? ' ' : '');
+    finalTranscript = deletedText + (deletedText && !deletedText.endsWith(' ') ? ' ' : '');
     showToast('✅ টেক্সট পুনরুদ্ধার করা হয়েছে');
     undoBtn.classList.remove('show');
     deletedText = '';
@@ -615,12 +576,12 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-// Theme Toggle
+// Theme Toggle (Light Default -> Dark on Check)
 themeToggle.addEventListener('change', function() {
   if (this.checked) {
-    document.documentElement.classList.add('light-mode');
+    document.documentElement.classList.add('dark-mode');
   } else {
-    document.documentElement.classList.remove('light-mode');
+    document.documentElement.classList.remove('dark-mode');
   }
 });
 
