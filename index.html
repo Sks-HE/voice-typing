@@ -93,11 +93,25 @@ body {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #fff;
+  background: transparent; /* পুরোনো কালার সরানো হলো */
 }
 
-html.dark-mode .bg-animation-container {
-  background: linear-gradient(180deg,#050a15 0%,#0a1628 55%,#0d1f3c 100%);
+/* ব্যাকগ্রাউন্ড ইমেজ এবং হালকা ব্লার ইফেক্ট শুধু এখানেই প্রয়োগ হবে */
+.bg-animation-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('https://i.pinimg.com/736x/f7/ec/b9/f7ecb95038cd92fcf7854848c99a219f.jpg'); /* Laptop Light Mode */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  filter: blur(3px); /* হালকা ব্লার ইফেক্ট (বেশি না) */
+  z-index: -1;
+}
+
+html.dark-mode .bg-animation-container::before {
+  background-image: url('https://i.pinimg.com/736x/1c/79/8b/1c798b11252ff958e405dc6fa6e9a39a.jpg'); /* Laptop Dark Mode */
 }
 
 .mesh-grid {
@@ -528,6 +542,16 @@ html.dark-mode .toast::after {
     border-bottom-right-radius: 0;
     margin-bottom: 0;
     border-bottom: none; /* নিচের বর্ডার সরানো হলো যাতে বাটনের সাথে মিশে যায় */
+    /* ফোনের লাইট মোডের ওয়ালপেপার */
+  .bg-animation-container::before {
+    background-image: url('https://i.pinimg.com/736x/5a/a2/c9/5aa2c9c5d23bd281d4ebc13883837a39.jpg');
+  }
+
+  /* ফোনের ডার্ক মোডের ওয়ালপেপার */
+  html.dark-mode .bg-animation-container::before {
+    background-image: url('https://i.pinimg.com/736x/2c/00/b7/2c00b7253769df3db279df1289f358a7.jpg');
+  }
+      
   }
 
   .text-display { font-size: 1.08rem; min-height: 190px; max-height: 42vh; }
