@@ -457,6 +457,15 @@ html.dark-mode .bg-animation-container::before {
 .action-btn { display: flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 8px; border: 1px solid; background: transparent; font-family: inherit; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .3s ease; }
 .edit-btn { border-color: var(--copy-border); color: var(--accent); }
 .edit-btn:hover, .edit-btn.active { background: var(--copy-bg); transform: translateY(-2px); }
+
+/* মাইক্রোফোন চাপলে Save বাটন লাল হবে */
+.edit-btn.mic-warning {
+  background: #ff4b64 !important;
+  color: #ffffff !important;
+  border-color: #ff4b64 !important;
+  box-shadow: 0 0 14px rgba(255, 75, 100, 0.65);
+}
+
 .copy-btn { border-color: var(--copy-border); color: var(--accent); }
 .copy-btn:hover { background: var(--copy-bg); transform: translateY(-2px); }
 .clear-btn { border-color: var(--clear-border); color: var(--clear-color); }
@@ -1073,10 +1082,51 @@ function updateMicUI(active) {
   micStatus.textContent = active ? t.micListening : t.micIdle;
 }
 
+
 function toggleListening() {
+  // Edit Mode চালু থাকলে মাইক চালু হবে না
+  if (isEditMode) {
+    const t = uiText[currentUILang];
+
+    // এডিট করা লেখা সেভ করো
+    isEditMode = false;
+    baseTranscript = textDisplay.value.trim();
+    interimTranscript = '';
+
+    // Text Box আবার Read-only করো
+    textDisplay.setAttribute('readonly', true);
+    textDisplay.classList.remove('editable');
+
+    // Edit বাটনকে আবার Edit অবস্থায় ফিরিয়ে আনো
+    editBtn.classList.remove('active');
+    editBtnText.textContent = t.edit;
+
+
+    // সেভ করা লেখা ঠিক রাখো
+    renderTranscript();
+
+    // আগের মেসেজ সিস্টেমে সেভ হওয়ার মেসেজ দেখাও
+    showToast('toastEditOff');
+
+    // Edit বাটন লাল করো এবং কাঁপাও
+    editBtn.classList.add('mic-warning');
+    shakeEditButton();
+
+
+    // অ্যানিমেশন শেষে লাল রং সরিয়ে দাও
+    window.setTimeout(() => {
+      editBtn.classList.remove('mic-warning');
+    }, 650);
+
+    // এই ক্লিকে মাইক চালু হবে না
+    return;
+  }
+
+  // Edit Mode বন্ধ থাকলে মাইক্রোফোন স্বাভাবিকভাবে কাজ করবে
   if (isListening) stopListening();
   else startListening();
 }
+
 
 function startListening() {
   if (isListening) return;
