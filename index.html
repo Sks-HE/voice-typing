@@ -1238,18 +1238,29 @@ function shakeEditButton() {
 }
 
 
-document.addEventListener('contextmenu', event => {
-  const inTextBox = event.target === textDisplay;
 
-  // টেক্সট বক্সে রাইট-ক্লিক করলে এডিট মোড চালু হবে
-  if (inTextBox && !isEditMode) {
+
+
+document.addEventListener('contextmenu', event => {
+  // টেক্সট বক্সের ভেতরে রাইট-ক্লিক করলে
+  // ব্রাউজার মেনু বন্ধ হবে এবং Edit বাটন কাঁপবে
+  if (event.target === textDisplay) {
     event.preventDefault();
-    toggleEditMode();
+    event.stopPropagation();
+
+    if (!isEditMode) {
+      shakeEditButton();
+    }
+
     return;
   }
 
-  // এডিট মোড চালু থাকলে স্বাভাবিক রাইট-ক্লিক মেনু চলবে
+  // টেক্সট বক্সের বাইরে রাইট-ক্লিক মেনু বন্ধ থাকবে
+  event.preventDefault();
+  event.stopPropagation();
 }, true);
+
+
 
 
 let longPressTimer = null;
