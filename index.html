@@ -1237,12 +1237,20 @@ function shakeEditButton() {
   window.setTimeout(() => editBtn.classList.remove('shake-edit'), 650);
 }
 
+
 document.addEventListener('contextmenu', event => {
   const inTextBox = event.target === textDisplay;
-  if (inTextBox && isEditMode) return;
-  event.preventDefault();
-  if (inTextBox && !isEditMode) shakeEditButton();
+
+  // টেক্সট বক্সে রাইট-ক্লিক করলে এডিট মোড চালু হবে
+  if (inTextBox && !isEditMode) {
+    event.preventDefault();
+    toggleEditMode();
+    return;
+  }
+
+  // এডিট মোড চালু থাকলে স্বাভাবিক রাইট-ক্লিক মেনু চলবে
 }, true);
+
 
 let longPressTimer = null;
 let longPressTriggered = false;
@@ -1275,9 +1283,24 @@ shakeStyle.textContent = `
 }
 .edit-btn.shake-edit { animation: editButtonShake .55s ease-in-out; }
 `;
-document.head.appendChild(shakeStyle);
 
 document.addEventListener('keydown', event => {
+  const key = event.key.toLowerCase();
+
+  // Attempt to block common browser inspection shortcuts
+  const blockedShortcut =
+    (event.ctrlKey && !event.shiftKey && key === 'u') ||
+    (event.ctrlKey && event.shiftKey &&
+      ['i', 'j', 'c'].includes(key)) ||
+    (key === 'f12');
+
+  if (blockedShortcut) {
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  }
+
+  // Preserve the existing microphone shortcut
   if (event.code === 'Space' && event.ctrlKey) {
     event.preventDefault();
     toggleListening();
@@ -1286,6 +1309,7 @@ document.addEventListener('keydown', event => {
 
 // Initialize UI on load
 updateUI();
+
 </script>
 </body>
 </html>
